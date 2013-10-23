@@ -1,7 +1,6 @@
 package reporter;
 
 import org.joda.time.DateTime;
-import org.joda.time.Seconds;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -75,14 +74,6 @@ public class WorkedDay {
 	public String getMinutes(long duration) {
 		long minutes = Math.round((duration % 3600) / 60.0);
 		return minutes == 0 ? "" : minutes + " Minuten"; 
-	}
-
-	public Seconds convertToSeconds(long time) {
-		return Seconds.seconds(new Long(time).intValue());
-	}
-
-	public static String createDurationString(Seconds secs) {
-		return secs.toStandardHours() + ":" + secs.toStandardMinutes();
 	}
 
 	public void calculateDiff() {
