@@ -1,6 +1,9 @@
 package reporter;
 
+import java.util.Date;
+
 import org.joda.time.DateTime;
+import org.joda.time.Seconds;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -10,8 +13,19 @@ public class WorkedDay {
 	private long undertime;
 	private long overtime;
 
+	public WorkedDay(DateTime day) {
+		this.day = day;
+	}
+
 	public DateTime getDay() {
 		return day;
+	}
+
+	public void addWorkedTime(Date startDate, Date stopDate) {
+		DateTime start = new DateTime(startDate);
+		DateTime stop = new DateTime(stopDate);
+		Seconds duration = Seconds.secondsBetween(start, stop);
+		workedTime += duration.getSeconds();
 	}
 
 	public void setDay(DateTime day) {
@@ -73,7 +87,7 @@ public class WorkedDay {
 
 	public String getMinutes(long duration) {
 		long minutes = Math.round((duration % 3600) / 60.0);
-		return minutes == 0 ? "" : minutes + " Minuten"; 
+		return minutes == 0 ? "" : minutes + " Minuten";
 	}
 
 	public void calculateDiff() {

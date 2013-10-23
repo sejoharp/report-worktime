@@ -34,7 +34,7 @@ public class App {
 		SessionFactory sf = configuration.buildSessionFactory(sr);
 		Session session = sf.openSession();
 		Query query = session
-				.createQuery("from Interval where start between '2013-06-01' and '2013-09-30'");
+				.createQuery("from Interval where start between '2013-07-01' and '2013-09-30'");
 		List<Interval> intervals = query.list();
 		session.close();
 		createFile(intervals);
@@ -88,25 +88,17 @@ public class App {
 		List<WorkedDay> workdays = new ArrayList<>();
 		DateTime firstDay = new DateTime(intervals.get(0).getStart())
 				.withTimeAtStartOfDay();
-		WorkedDay workday = new WorkedDay();
-		workday.setDay(firstDay);
+		WorkedDay workday = new WorkedDay(firstDay);
 		for (Interval interval : intervals) {
-			DateTime start = new DateTime(interval.getStart());
-			DateTime stop = new DateTime(interval.getStop());
-			Seconds duration = Seconds.secondsBetween(start, stop);
-			DateTime day = start.withTimeAtStartOfDay();
-			if (workday.getDay().isEqual(day)) {
-				workday.setWorkedTime(workday.getWorkedTime()
-						+ duration.getSeconds());
-			} else {
+			DateTime day = new DateTime(interval.getStart())
+					.withTimeAtStartOfDay();
+			if (!workday.getDay().isEqual(day)) {
 				workday.calculateDiff();
 				workdays.add(workday);
 
-				workday = new WorkedDay();
-				workday.setDay(day);
-				workday.setWorkedTime(workday.getWorkedTime()
-						+ duration.getSeconds());
+				workday = new WorkedDay(day);
 			}
+			workday.addWorkedTime(interval.getStart(), interval.getStop());
 		}
 		workday.calculateDiff();
 		workdays.add(workday);
