@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -16,8 +18,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 import org.joda.time.DateTime;
-import org.joda.time.Seconds;
-
 import reporter.model.Interval;
 
 /**
@@ -98,7 +98,7 @@ public class App {
 
 				workday = new WorkedDay(day);
 			}
-			workday.addWorkedTime(interval.getStart(), interval.getStop());
+			workday.addWorkedTime(interval);
 		}
 		workday.calculateDiff();
 		workdays.add(workday);

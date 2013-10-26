@@ -1,11 +1,11 @@
 package reporter;
 
-import java.util.Date;
-
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import reporter.model.Interval;
 
 public class WorkedDay {
 	private DateTime day;
@@ -21,9 +21,9 @@ public class WorkedDay {
 		return day;
 	}
 
-	public void addWorkedTime(Date startDate, Date stopDate) {
-		DateTime start = new DateTime(startDate);
-		DateTime stop = new DateTime(stopDate);
+	public void addWorkedTime(Interval interval) {
+		DateTime start = new DateTime(interval.getStart());
+		DateTime stop = new DateTime(interval.getStop());
 		Seconds duration = Seconds.secondsBetween(start, stop);
 		workedTime += duration.getSeconds();
 	}
